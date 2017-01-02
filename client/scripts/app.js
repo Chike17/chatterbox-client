@@ -1,37 +1,72 @@
 // YOUR CODE HERE:
- 
-// You'll do this using $.ajax to send (POST) and fetch (GET) JSON data to and from a remote server.
 
-var app = {
-  init: function() {},
-  send: function() {
-    $(document).ready(function() {
-      // var $chats= $('#chats');
-      var message = {
-        username: 'shawndrost',
-        text: 'trololo',
-        roomname: '4chan'
-      };
-      // $('button').click(function() {
-          $.ajax({
-            url: 'https://api.parse.com/1/classes/messages',
-            type: 'POST',
-            data: JSON.stringify(message),
-            contentType: 'application/json',
-            success: function (data) {
-              console.log('chatterbox: Message sent');
-            },
-            error: function (data) {
-              // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-              console.error('chatterbox: Failed to send message', data);
-            }
-          });
-      });
-    // });
-  },
-  fetch: function() {}
+var app = {};
+
+app.init = function () {};
+
+app.send = function (message) {
+
+  $.ajax({
+    url: 'https://api.parse.com/1/classes/messages',
+    type: 'POST',
+    data: JSON.stringify(message),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log('chatterbox: Message sent');
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Failed to send message', data);
+    }
+  });
+
 };
 
-// $.get('https://api.parse.com/1/classes/messages', function(data) {
-//     $('#chats').append($data);
-// });
+app.fetch = function () {
+  $.ajax({
+    url: 'https://api.parse.com/1/classes/messages',
+    type: 'GET',
+    data: JSON.stringify(message),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log('chatterbox: Message received');
+      console.log(data);
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Failed to receive message', data);
+    }
+  });
+  // $.get('https://api.parse.com/1/classes/messages', function(data, status) {
+  //   console.log(data, status);
+  // });
+  // console.log(JSON.stringify($.ajax.args[0][0]));
+};
+
+app.server = 'https://api.parse.com/1/classes/messages'; // revisit
+
+app.clearMessages = function () {
+  $('#chats').empty();
+};
+
+app.renderMessage = function (message) {
+
+  var $message = $('<div class="message"></div>');
+  var $username = $('<span class="username"></span>');
+  var $text = $('<div class="text"></div>');
+  var $roomname = $('<div class="roomname"></div>');
+  $username.text(message.username);
+  $text.text(message.text);
+  $roomname.text(message.roomname);
+  $username.appendTo($message);
+  $text.appendTo($message);
+  $roomname.appendTo($message);
+  $message.appendTo($('#chats'));
+
+};
+
+app.renderRoom = function (roomName) {
+  var $roomname = $('<div class="roomname"></div>');
+  $roomname.text(roomName);
+  $roomname.appendTo($('#roomSelect'));
+};
