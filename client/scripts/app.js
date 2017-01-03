@@ -3,13 +3,15 @@
 var app = {};
 
 app.init = function () {
-  $('#main').on('click', '.username', function () {
-    app.handleUsernameClick('.username');
+  $( document ).ready(function() {
+    $('#main').on('click', '.username', function () {
+      app.handleUsernameClick('.username');
+    });
+
+    $('#send').on('click', '.submit', app.handleSubmit);
   });
 
-  $('#send').on('submit', function( event ) {
-    app.handleSubmit();
-  });
+  setInterval(app.fetch, 3000);
 };
 
 
@@ -22,6 +24,7 @@ app.send = function (message) {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
+      // console.log(data);
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -90,15 +93,17 @@ app.handleSubmit = function () {
     text: $('#message').val(),
     roomname: $('roomSelect').val() ? $('roomSelect').val() : 'lobby'
   };
+  console.log(message);
+  app.send(message);
   app.renderMessage(message);
 };
 
 app.displayMessages = function() {
-  setTimeout(window.allMsgs.forEach(function(message) {
+  app.clearMessages();
+  window.allMsgs.forEach(function(message) {
     app.renderMessage(message);
-    console.log(window.allMsgs);
-  }), 3000);
+  });
 };
 
-app.fetch();
+app.init();
 
