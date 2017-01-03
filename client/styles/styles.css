@@ -103,6 +103,7 @@ form input[type=text] {
     padding: 5px;
     margin: 5px;
     background-color: #2BDBF8;
+    word-break: break-all;
 }
 #room {
     font-family: arial, sans-serif;

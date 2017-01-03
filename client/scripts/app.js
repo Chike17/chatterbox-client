@@ -59,7 +59,7 @@ app.fetch = function () {
   $.ajax({
     url: 'https://api.parse.com/1/classes/messages',
     type: 'GET',
-    data: {order: '-createdAt'},
+    data: {'order': '-createdAt', 'limit': 99999},
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message received');
