@@ -10,11 +10,27 @@ app.init = function () {
     $('#rooms').on('click', '.newRoom', app.renderRoom);
 
     $('.roomSelect').change(app.displayMessages);
+
+    $('#message').bind('keypress', function(e) {
+      if (e.which < 48 || 
+        (e.which > 57 && e.which < 65) || 
+        (e.which > 90 && e.which < 97) ||
+        e.which > 122) {
+        e.preventDefault();
+      }
+    }); 
+    $('#room').bind('keypress', function(e) {
+      if (e.which < 48 || 
+        (e.which > 57 && e.which < 65) || 
+        (e.which > 90 && e.which < 97) ||
+        e.which > 122) {
+        e.preventDefault();
+      }
+    }); 
   });
   window.friends = [];
   setInterval(app.fetch, 1000);
 };
-
 
 app.send = function (message) {
 
