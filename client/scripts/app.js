@@ -12,7 +12,7 @@ app.init = function () {
     $('.roomSelect').change(app.displayMessages);
 
     $('#message').bind('keypress', function(e) {
-      if (e.which < 48 || 
+      if ((e.which > 32 && e.which < 48) || 
         (e.which > 57 && e.which < 65) || 
         (e.which > 90 && e.which < 97) ||
         e.which > 122) {
@@ -20,7 +20,7 @@ app.init = function () {
       }
     }); 
     $('#room').bind('keypress', function(e) {
-      if (e.which < 48 || 
+      if ((e.which > 32 && e.which < 48) || 
         (e.which > 57 && e.which < 65) || 
         (e.which > 90 && e.which < 97) ||
         e.which > 122) {
@@ -113,10 +113,9 @@ app.handleSubmit = function () {
   var message = {
     username: window.location.search ? window.location.search.slice(10) : 'anonymous',
     text: $('#message').val(),
-    roomname: $('roomSelect').val() ? $('roomSelect').val() : 'lobby'
+    roomname: $('.roomSelect').val() ? $('.roomSelect').val() : 'lobby'
   };
   app.send(message);
-  // app.renderMessage(message);
 };
 
 app.displayMessages = function() {
