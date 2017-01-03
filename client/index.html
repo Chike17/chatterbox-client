@@ -27,11 +27,13 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
 
-      <div class="rooms">
-        <b>Room: </b> <select id="roomSelect">
-          <option value="lobby">lobby</option>
-          <option value="Room2">Room 2</option>
+      <div id="rooms">
+        <b>Room: </b> <select class="roomSelect">
+          <option class="lobby" value="lobby">lobby</option>
         </select>
+        <input type="text" id="room" value="New room name">
+        <button class="newRoom">Create Room</button>
+        <BR><BR>
       </div>
 
       <div id="send">

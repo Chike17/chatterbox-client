@@ -9,9 +9,14 @@ app.init = function () {
     });
 
     $('#send').on('click', '.submit', app.handleSubmit);
+
+    $('#rooms').on('click', '.newRoom', app.renderRoom);
+
+    // add event handler for when room is selected in drop down and call
+    // displayRoomMessages
   });
 
-  setInterval(app.fetch, 3000);
+  setInterval(app.fetch, 1000);
 };
 
 
@@ -24,7 +29,7 @@ app.send = function (message) {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
-      // console.log(data);
+      console.log(data);
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -38,11 +43,13 @@ app.fetch = function () {
   $.ajax({
     url: 'https://api.parse.com/1/classes/messages',
     type: 'GET',
+    data: {order: '-createdAt'},
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message received');
       window.allMsgs = data.results;
       app.displayMessages();
+      app.displayRooms();
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -77,10 +84,11 @@ app.renderMessage = function (message) {
 
 };
 
-app.renderRoom = function (roomName) {
-  var $roomname = $('<div class="roomname"></div>');
-  $roomname.text(roomName);
-  $roomname.appendTo($('#roomSelect'));
+app.renderRoom = function () {
+  var roomName = $('#room').val();
+  var $roomname = $('<option class="' + roomName + '"></option>');
+  $roomname.text($('#room').val());
+  $roomname.appendTo($('.roomSelect'));
 };
 
 app.handleUsernameClick = function (username) {
@@ -93,15 +101,37 @@ app.handleSubmit = function () {
     text: $('#message').val(),
     roomname: $('roomSelect').val() ? $('roomSelect').val() : 'lobby'
   };
-  console.log(message);
   app.send(message);
-  app.renderMessage(message);
+  // app.renderMessage(message);
 };
 
 app.displayMessages = function() {
   app.clearMessages();
   window.allMsgs.forEach(function(message) {
     app.renderMessage(message);
+  });
+};
+
+app.displayRooms = function() {
+  var roomNames = {};
+  var existingRooms = $('option').attr('class').split(' ');
+console.log(existingRooms);
+  window.allMsgs.forEach(function(message) {
+    if (existingRooms.indexOf(message.roomname) < 0) {
+      roomNames[message.roomname] = message.roomname;
+    }
+  });
+  for (var key in roomNames) {
+    var $roomname = $('<option class="' + key + '"></option>');
+    $roomname.text(key);
+    $roomname.appendTo($('.roomSelect'));
+  }
+};
+
+app.displayRoomMessages = function() {
+  window.allMsgs.forEach(function(message) {
+    // app.renderMessage(message);
+    // filter messages for specific room that was selected
   });
 };
 
