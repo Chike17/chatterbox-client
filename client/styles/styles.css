@@ -87,4 +87,34 @@ form input[type=text] {
     color: #fff;
     background-color: #0090da;
 }
+#message {
+    border: 2px solid silver;
+    border-radius: 10px;
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    font-family: arial, sans-serif;
+    font-size: 12px;
+}
+.message {
+    border: 2px solid silver;
+    border-radius: 10px;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    background-color: #2BDBF8;
+}
+#room {
+    font-family: arial, sans-serif;
+    font-size: 12px;
+}
+.submit, .newRoom{
+    font-family: arial, sans-serif;
+    font-size: 12px;    
+}
+select {
+    font-family: arial, sans-serif;
+    font-size: 12px;    
+    width: 150px;
+}
 

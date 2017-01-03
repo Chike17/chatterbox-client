@@ -82,16 +82,16 @@ app.clearMessages = function () {
 
 app.renderMessage = function (message) {
 
-  var $message = $('<div class="message"><hr></div>');
+  var $message = $('<div class="message"></div>');
   var $username = $('<span class="username ' + message.username + '"></span>');
   var $text = $('<div class="text"></div>');
   var $roomname = $('<div class="roomname"></div>');
-  $username.text(message.username + ':');
+  $username.text('@' + message.username + ':');
   $text.text(message.text);
   $roomname.text(message.roomname);
   $username.appendTo($message);
   $text.appendTo($message);
-  $roomname.appendTo($message);
+  // $roomname.appendTo($message);
   $message.appendTo($('#chats'));
 
 };
