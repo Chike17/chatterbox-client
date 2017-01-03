@@ -2,7 +2,16 @@
 
 var app = {};
 
-app.init = function () {};
+app.init = function () {
+  $('#main').on('click', '.username', function () {
+    app.handleUsernameClick('.username');
+  });
+
+  $('#send').on('submit', function( event ) {
+    app.handleSubmit();
+  });
+};
+
 
 app.send = function (message) {
 
@@ -26,11 +35,11 @@ app.fetch = function () {
   $.ajax({
     url: 'https://api.parse.com/1/classes/messages',
     type: 'GET',
-    data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message received');
-      console.log(data);
+      window.allMsgs = data.results;
+      app.displayMessages();
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -55,7 +64,7 @@ app.renderMessage = function (message) {
   var $username = $('<span class="username"></span>');
   var $text = $('<div class="text"></div>');
   var $roomname = $('<div class="roomname"></div>');
-  $username.text(message.username);
+  $username.text(message.username + ':');
   $text.text(message.text);
   $roomname.text(message.roomname);
   $username.appendTo($message);
@@ -70,3 +79,26 @@ app.renderRoom = function (roomName) {
   $roomname.text(roomName);
   $roomname.appendTo($('#roomSelect'));
 };
+
+app.handleUsernameClick = function (username) {
+  $(username).css('font-weight', 'bold');
+};
+
+app.handleSubmit = function () {
+  var message = {
+    username: window.location.search ? window.location.search.slice(10) : 'anonymous',
+    text: $('#message').val(),
+    roomname: $('roomSelect').val() ? $('roomSelect').val() : 'lobby'
+  };
+  app.renderMessage(message);
+};
+
+app.displayMessages = function() {
+  setTimeout(window.allMsgs.forEach(function(message) {
+    app.renderMessage(message);
+    console.log(window.allMsgs);
+  }), 3000);
+};
+
+app.fetch();
+
